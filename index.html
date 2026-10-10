@@ -17,49 +17,41 @@ main{max-width:860px;margin:auto;padding:20px 14px 44px}.top{display:flex;align-
 </head>
 <body>
 <main>
-  <header class="top"><div class="logo">▶</div><div><div class="eyebrow">Your creative studio · VERSION 0.3</div><h1>StoryFrame <span style="color:#b78aff">AI</span></h1><p>Story → scenes → AI visuals → your film.</p></div></header>
-  <section class="hero"><div style="display:inline-flex;align-items:center;gap:7px;border:1px solid #51618b;background:#101a31;border-radius:99px;padding:7px 11px;margin-bottom:14px;color:#8af0c2;font-size:11px;font-weight:800;letter-spacing:.6px">✦ NEW IN V0.3 · AI IMAGE WORKFLOW</div><h2>Your story deserves<br>a cinematic life.</h2><p>Now move from written scenes to visual frames. Generate a still for each scene, review it, then save or export your scene plan.</p><div class="tagrow"><span class="tag">01 · Write</span><span class="tag">02 · Generate scenes</span><span class="tag" style="border-color:#8e60df;color:#e1caff">03 · Create images</span></div></section>
-  <section class="panel" style="border-color:#8c5ee8;background:linear-gradient(135deg,#191a35,#101a2e);box-shadow:0 12px 36px #0003"><div style="display:flex;align-items:center;gap:12px"><div style="font-size:30px">🖼️</div><div style="flex:1"><div class="eyebrow" style="color:#c79aff">NEW WORKFLOW</div><h3 style="font-size:19px;margin:2px 0 4px">Turn scenes into images</h3><p class="hint" style="margin:0">This section is new. First generate your story scenes, then create one visual frame per scene.</p></div></div><div class="tagrow"><span class="tag">Scene-specific prompts</span><span class="tag">Portrait / landscape sizes</span><span class="tag">Images shown in scene cards</span></div><button class="btn primary" style="width:100%;margin-top:14px" onclick="document.getElementById('aiImages').scrollIntoView({behavior:'smooth'})">Go to AI image generator ↓</button></section>
-  <section class="panel">
-    <h3>01 · Create a project</h3>
-    <label class="label" for="title">Project title</label><input id="title" maxlength="90" placeholder="e.g. The Last Promise">
-    <label class="label" for="story">Paste or write your story</label><textarea id="story" maxlength="20000" placeholder="Write your story here. Separate paragraphs to guide where scenes change..."></textarea>
-    <div class="grid"><div><label class="label" for="style">Visual style</label><select id="style"><option>Cinematic realism</option><option>Anime</option><option>Fantasy</option><option>Dark thriller</option><option>Illustrated storybook</option><option>Documentary</option></select></div><div><label class="label" for="ratio">Video format</label><select id="ratio"><option value="9:16">Vertical · Reels / Shorts</option><option value="16:9">Widescreen · YouTube</option><option value="1:1">Square · Social</option></select></div></div>
-    <div class="btnrow"><button class="btn primary" id="generate">✦ Generate scenes</button><button class="btn quiet" id="example">Try example</button></div>
-    <div class="status" id="status" aria-live="polite"></div>
-    <p class="hint">Prototype note: scene splitting runs on your device using simple text rules. It does not generate AI images or moving video yet.</p>
-  </section>
-  <section class="panel" id="aiImages" style="border:2px solid #8c5ee8;background:linear-gradient(160deg,#171a35,#11192c)"><div class="eyebrow" style="color:#c79aff;margin-bottom:5px">NEW · IMAGE GENERATION</div><h3 style="font-size:20px">02 · AI scene images</h3>
-    <p class="hint">Generate a still image for each scene from its visual prompt. This uses the Pollinations image API. Its current service may require a publishable app key and may have limits or charges, so start with one test image and check your account's quota first.</p>
-    <label class="label" for="apiKey">Optional Pollinations publishable key (pk_…)</label>
-    <input id="apiKey" type="password" autocomplete="off" placeholder="Paste a publishable pk_ key if you have one">
-    <p class="hint">Do not paste a secret key (sk_…). This prototype keeps the key only in this page's memory and does not save it in project exports.</p>
-    <div class="btnrow"><button class="btn primary" id="generateAllImages">✦ Generate images for all scenes</button><button class="btn quiet" id="openImagePlayground">Open image playground</button></div>
-    <div class="status" id="imageStatus" aria-live="polite"></div><div class="empty" style="margin-top:10px">What should happen: tap “Generate this image” on a scene card. A generated still should appear inside that scene card. If the image service rejects the request, this area will show a troubleshooting message.</div>
+<header class="top"><div class="logo">▶</div><div><div class="eyebrow">Your creative studio · VERSION 0.4</div><h1>StoryFrame <span style="color:#b78aff">AI</span></h1><p>Story → scenes → AI visuals → your film.</p></div></header>
+<section class="hero"><div style="display:inline-flex;align-items:center;gap:7px;border:1px solid #51618b;background:#101a31;border-radius:99px;padding:7px 11px;margin-bottom:14px;color:#8af0c2;font-size:11px;font-weight:800;letter-spacing:.6px">✦ AI IMAGE WORKFLOW</div><h2>Your story deserves<br>a cinematic life.</h2><p>Move from written scenes to visual frames. Generate a still for each scene, review it, then save or export your scene plan.</p><div class="tagrow"><span class="tag">01 · Write</span><span class="tag">02 · Generate scenes</span><span class="tag" style="border-color:#8e60df;color:#e1caff">03 · Create images</span></div></section>
+<section class="panel" style="border-color:#8c5ee8;background:linear-gradient(135deg,#191a35,#101a2e);box-shadow:0 12px 36px #0003"><div style="display:flex;align-items:center;gap:12px"><div style="font-size:30px">🖼️</div><div style="flex:1"><div class="eyebrow" style="color:#c79aff">IMAGE WORKFLOW</div><h3 style="font-size:19px;margin:2px 0 4px">Turn scenes into images</h3><p class="hint" style="margin:0">Generate your story scenes first, then create one visual frame per scene.</p></div></div><div class="tagrow"><span class="tag">Scene-specific prompts</span><span class="tag">Portrait / landscape sizes</span><span class="tag">Images shown in scene cards</span></div><button class="btn primary" style="width:100%;margin-top:14px" onclick="document.getElementById('aiImages').scrollIntoView({behavior:'smooth'})">Go to AI image generator ↓</button></section>
+<section class="panel">
+<h3>01 · Create a project</h3>
+<label class="label" for="title">Project title</label><input id="title" maxlength="90" placeholder="e.g. The Last Promise">
+<label class="label" for="story">Paste or write your story</label><textarea id="story" maxlength="20000" placeholder="Write your story here. Separate paragraphs to guide where scenes change..."></textarea>
+<div class="grid"><div><label class="label" for="style">Visual style</label><select id="style"><option>Cinematic realism</option><option>Anime</option><option>Fantasy</option><option>Dark thriller</option><option>Illustrated storybook</option><option>Documentary</option></select></div><div><label class="label" for="ratio">Video format</label><select id="ratio"><option value="9:16">Vertical · Reels / Shorts</option><option value="16:9">Widescreen · YouTube</option><option value="1:1">Square · Social</option></select></div></div>
+<div class="btnrow"><button class="btn primary" id="generate">✦ Generate scenes</button><button class="btn quiet" id="example">Try example</button></div>
+<div class="status" id="status" aria-live="polite"></div><p class="hint">Scene splitting runs on your device using simple text rules. Image generation uses Pollinations after you connect your account.</p>
+</section>
+<section class="panel" id="aiImages" style="border:2px solid #8c5ee8;background:linear-gradient(160deg,#171a35,#11192c)">
+<div class="eyebrow" style="color:#c79aff;margin-bottom:5px">OAUTH IMAGE GENERATION</div><h3 style="font-size:20px">02 · AI scene images</h3>
+<p class="hint">Connect your Pollinations app first. The connection opens Pollinations' official authorization page. Your temporary access token stays in this page's memory and is not saved with projects.</p>
+<label class="label" for="apiKey">Pollinations app/client ID (pk_…)</label><input id="apiKey" type="password" autocomplete="off" placeholder="Paste your public pk_ app key">
+<div class="btnrow"><button class="btn primary" id="connectPollinations">🔗 Connect Pollinations</button><button class="btn quiet" id="disconnectPollinations">Disconnect</button></div>
+<div class="status" id="authStatus" aria-live="polite">Not connected yet.</div>
+<div class="btnrow"><button class="btn primary" id="generateAllImages">✦ Generate images for all scenes</button><button class="btn quiet" id="openImagePlayground">Open image playground</button></div>
+<div class="status" id="imageStatus" aria-live="polite"></div><div class="empty" style="margin-top:10px">Connect first, generate scenes, then create images. If authorization fails, check that the registered redirect URI exactly matches this site's URL.</div>
 </section>
 <section class="panel"><h3>03 · Edit your scenes</h3><div id="scenes" class="empty">Your scenes will appear here. Generate scenes after adding a story.</div><div class="btnrow" id="sceneActions" style="display:none"><button class="btn primary" id="save">Save project on this device</button><button class="btn" id="export">Export project JSON</button><button class="btn" id="script">Download scene script</button></div></section>
-  <section class="panel"><h3>04 · Saved projects</h3><div id="saved" class="empty">No saved projects yet.</div><p class="hint">Projects are saved in this browser on this device. Clearing browser data may remove them, so export a backup.</p></section>
-  <div class="footer">STORYFRAME AI · MVP 0.3 · Visual upgrade</div>
+<section class="panel"><h3>04 · Saved projects</h3><div id="saved" class="empty">No saved projects yet.</div><p class="hint">Projects are saved in this browser on this device. Clearing browser data may remove them, so export a backup.</p></section>
+<div class="footer">STORYFRAME AI · MVP 0.4 · OAuth image workflow</div>
 </main>
 <script>
 const $=id=>document.getElementById(id);
 let scenes=[];
+let pollinationsToken=null;
+let tokenExpiresAt=0;
 const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function splitStory(raw){
-  let paras=raw.replace(/\r/g,'').split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean);
-  let units=[];
-  for(const p of paras){
-    if(p.length<520){units.push(p);continue}
-    const sentences=p.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[p];
-    let chunk='';
-    for(const sentence of sentences){if((chunk+' '+sentence).trim().length>420&&chunk){units.push(chunk.trim());chunk=sentence.trim()}else chunk+=(chunk?' ':'')+sentence.trim()}
-    if(chunk)units.push(chunk.trim());
-  }
-  if(units.length===1 && units[0].length>230){
-    const s=units[0].match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[units[0]], out=[];let c='';
-    for(const x of s){if((c+' '+x).trim().length>260&&c){out.push(c.trim());c=x.trim()}else c+=(c?' ':'')+x.trim()}if(c)out.push(c.trim());units=out;
-  }
-  return units.map((text,i)=>({text,visual:`${$('style').value} look. Scene ${i+1}, cinematic composition, expressive characters, deliberate camera movement, consistent character appearance.`,voice:'Narration: read naturally, with emotion appropriate to the scene.'}));
+ let paras=raw.replace(/\r/g,'').split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean),units=[];
+ for(const p of paras){if(p.length<520){units.push(p);continue}const sentences=p.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[p];let chunk='';for(const sentence of sentences){if((chunk+' '+sentence).trim().length>420&&chunk){units.push(chunk.trim());chunk=sentence.trim()}else chunk+=(chunk?' ':'')+sentence.trim()}if(chunk)units.push(chunk.trim())}
+ if(units.length===1&&units[0].length>230){const s=units[0].match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[units[0]],out=[];let c='';for(const x of s){if((c+' '+x).trim().length>260&&c){out.push(c.trim());c=x.trim()}else c+=(c?' ':'')+x.trim()}if(c)out.push(c.trim());units=out}
+ return units.map((text,i)=>({text,visual:`${$('style').value} look. Scene ${i+1}, cinematic composition, expressive characters, deliberate camera movement, consistent character appearance.`,voice:'Narration: read naturally, with emotion appropriate to the scene.'}));
 }
 function renderScenes(){
  const wrap=$('scenes');
@@ -70,53 +62,80 @@ function renderScenes(){
  wrap.querySelectorAll('[data-i]').forEach(el=>el.addEventListener('input',e=>{const i=+e.target.dataset.i;scenes[i][e.target.dataset.field]=e.target.value}));
  wrap.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>move(+b.dataset.up,-1));
  wrap.querySelectorAll('[data-down]').forEach(b=>b.onclick=()=>move(+b.dataset.down,1));
- wrap.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{scenes.splice(+b.dataset.delete,1);renderScenes()}); wrap.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>generateImage(+b.dataset.image));
+ wrap.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{scenes.splice(+b.dataset.delete,1);renderScenes()});
+ wrap.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>generateImage(+b.dataset.image));
 }
 function move(i,d){const j=i+d;if(j<0||j>=scenes.length)return;[scenes[i],scenes[j]]=[scenes[j],scenes[i]];renderScenes()}
 function project(){return {app:'StoryFrame AI',version:1,title:$('title').value.trim()||'Untitled story',style:$('style').value,ratio:$('ratio').value,story:$('story').value,scenes,updatedAt:new Date().toISOString()}}
 $('generate').onclick=()=>{const story=$('story').value.trim();if(!story){$('status').textContent='Add your story first, then tap Generate scenes.';$('story').focus();return}scenes=splitStory(story);renderScenes();$('status').textContent=`Created ${scenes.length} scene${scenes.length===1?'':'s'}. Review and edit them below.`;document.querySelector('#scenes').scrollIntoView({behavior:'smooth',block:'start'})};
-$('example').onclick=()=>{$('title').value='The Light at the End';$('story').value='Every evening, Aarav sat on the old railway platform, watching trains carry strangers toward lives he could only imagine.\\n\\nOne rainy night, he found a small notebook beneath the bench. Its pages held letters from a woman who had waited for someone for twenty years.\\n\\nAarav followed the clues in the letters to a quiet seaside town. At sunrise, he finally found the woman, now old and smiling, standing beside the lighthouse. The last letter had been written to her younger self: never stop hoping.\\n\\nOn the journey home, Aarav opened a fresh page and began writing his own story.';$('status').textContent='Example loaded. Tap Generate scenes.'};
-function saveProject(){const p=project();let all=[];try{all=JSON.parse(localStorage.getItem('storyframe-projects')||'[]')}catch(e){};all=all.filter(x=>x.title!==p.title);all.unshift(p);localStorage.setItem('storyframe-projects',JSON.stringify(all.slice(0,30)));renderSaved();$('status').textContent='Project saved on this device.'}
+$('example').onclick=()=>{$('title').value='The Light at the End';$('story').value='Every evening, Aarav sat on the old railway platform, watching trains carry strangers toward lives he could only imagine.\n\nOne rainy night, he found a small notebook beneath the bench. Its pages held letters from a woman who had waited for someone for twenty years.\n\nAarav followed the clues in the letters to a quiet seaside town.\n\nAt sunrise, he finally found the woman, now old and smiling, standing beside the lighthouse. The last letter had been written to her younger self: never stop hoping.\n\nOn the journey home, Aarav opened a fresh page and began writing his own story.';$('status').textContent='Example loaded. Tap Generate scenes.'};
+function saveProject(){const p=project();let all=[];try{all=JSON.parse(localStorage.getItem('storyframe-projects')||'[]')}catch(e){}all=all.filter(x=>x.title!==p.title);all.unshift(p);try{localStorage.setItem('storyframe-projects',JSON.stringify(all.slice(0,30)));renderSaved();$('status').textContent='Project saved on this device.'}catch(e){$('status').textContent='Could not save. The browser storage may be full; export the project JSON instead.'}}
 $('save').onclick=saveProject;
 function download(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 $('export').onclick=()=>download((project().title||'story').replace(/[^a-z0-9-_]/gi,'_')+'.json',JSON.stringify(project(),null,2),'application/json');
 $('script').onclick=()=>{const p=project();const body=p.scenes.map((s,i)=>`SCENE ${i+1}\nNARRATION / ACTION\n${s.text}\n\nVISUAL DIRECTION\n${s.visual}\n\nVOICE\n${s.voice}`).join('\n\n--------------------\n\n');download((p.title||'story').replace(/[^a-z0-9-_]/gi,'_')+'_script.txt',p.title+'\nStyle: '+p.style+'\nFormat: '+p.ratio+'\n\n'+body,'text/plain')};
 
-function makeImageUrl(prompt){
- const key=$('apiKey').value.trim();
- // Use the official unified API. API keys are optional in the UI, but current service policy may require one.
- const base='https://gen.pollinations.ai/image/'+encodeURIComponent(prompt);
- const params=new URLSearchParams({model:'flux',width:$('ratio').value==='9:16'?'768':$('ratio').value==='16:9'?'1024':'768',height:$('ratio').value==='9:16'?'1024':$('ratio').value==='16:9'?'576':'768'});
- if(key) params.set('key',key);
- return base+'?'+params.toString();
+function base64url(bytes){let s='';bytes.forEach(b=>s+=String.fromCharCode(b));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function randomString(n=64){const a=new Uint8Array(n);crypto.getRandomValues(a);return base64url(a)}
+async function sha256(value){return await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))}
+function redirectUri(){return window.location.origin+window.location.pathname}
+async function connectPollinations(){
+ const clientId=$('apiKey').value.trim();
+ if(!clientId.startsWith('pk_')){$('authStatus').textContent='Paste your Pollinations public app/client ID beginning with pk_ first.';return}
+ if(!crypto.subtle){$('authStatus').textContent='Secure browser cryptography is unavailable in this browser. Open the HTTPS site in a modern browser.';return}
+ try{
+  const verifier=randomString(64),state=randomString(24),challenge=base64url(new Uint8Array(await sha256(verifier)));
+  sessionStorage.setItem('sf_pkce_verifier',verifier);sessionStorage.setItem('sf_oauth_state',state);sessionStorage.setItem('sf_oauth_client',clientId);
+  const p=new URLSearchParams({response_type:'code',client_id:clientId,redirect_uri:redirectUri(),scope:'profile usage',state,code_challenge:challenge,code_challenge_method:'S256'});
+  window.location.href='https://enter.pollinations.ai/authorize?'+p.toString();
+ }catch(e){$('authStatus').textContent='Could not start authorization: '+e.message}
 }
+async function handleOAuthReturn(){
+ const u=new URL(window.location.href),code=u.searchParams.get('code'),returnedState=u.searchParams.get('state'),error=u.searchParams.get('error');
+ if(error){$('authStatus').textContent='Pollinations authorization was cancelled or rejected: '+(u.searchParams.get('error_description')||error);history.replaceState({},document.title,redirectUri());return}
+ if(!code)return;
+ history.replaceState({},document.title,redirectUri());
+ const expected=sessionStorage.getItem('sf_oauth_state'),verifier=sessionStorage.getItem('sf_pkce_verifier'),clientId=sessionStorage.getItem('sf_oauth_client')||$('apiKey').value.trim();
+ sessionStorage.removeItem('sf_oauth_state');sessionStorage.removeItem('sf_pkce_verifier');sessionStorage.removeItem('sf_oauth_client');
+ if(!expected||returnedState!==expected||!verifier||!clientId){$('authStatus').textContent='Security check failed or the login session expired. Tap Connect Pollinations and try again.';return}
+ $('authStatus').textContent='Finishing secure connection…';
+ try{
+  const body=new URLSearchParams({grant_type:'authorization_code',code,client_id:clientId,redirect_uri:redirectUri(),code_verifier:verifier});
+  const r=await fetch('https://enter.pollinations.ai/api/oauth/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body});
+  const data=await r.json();
+  if(!r.ok||!data.access_token)throw new Error(data.error_description||data.error||'Token exchange was rejected');
+  pollinationsToken=data.access_token;tokenExpiresAt=Date.now()+((Number(data.expires_in)||3600)*1000);
+  $('authStatus').textContent='Connected to Pollinations. You can generate images now.';
+ }catch(e){$('authStatus').textContent='Connection failed: '+e.message+'. Check the registered redirect URI and try connecting again.'}
+}
+function disconnectPollinations(){pollinationsToken=null;tokenExpiresAt=0;$('authStatus').textContent='Disconnected. Connect again before generating images.'}
+function imageDimensions(){const r=$('ratio').value;return r==='9:16'?{width:768,height:1024}:r==='16:9'?{width:1024,height:576}:{width:768,height:768}}
 async function generateImage(i){
  if(!scenes[i])return;
- const status=$('imageStatus');
- const prompt=(scenes[i].visual||'').trim()+'; '+(scenes[i].text||'')+'; no text, no captions, cinematic film still, detailed composition, coherent lighting.';
- if(prompt.length<8){status.textContent='Add a visual prompt first.';return}
+ if(!pollinationsToken||Date.now()>=tokenExpiresAt){pollinationsToken=null;$('imageStatus').textContent='Connect Pollinations first, then retry this image.';return}
+ const status=$('imageStatus'),prompt=(scenes[i].visual||'').trim()+'; '+(scenes[i].text||'')+'; no text, no captions, cinematic film still, detailed composition, coherent lighting.';
  status.textContent=`Requesting image for scene ${i+1}… this may take a while.`;
- const url=makeImageUrl(prompt);
- // The service returns an image URL. Check the image can load before attaching it.
- const img=new Image();
- img.onload=()=>{scenes[i].imageUrl=url;renderScenes();status.textContent=`Image ready for scene ${i+1}. Save the project to keep it in your saved project.`};
- img.onerror=()=>{status.textContent='Image request failed. The service may require a publishable key, have reached its quota, or be temporarily unavailable. Try the playground or check the provider’s current terms.'};
- img.referrerPolicy='no-referrer';
- img.src=url;
+ try{
+  const d=imageDimensions(),url='https://gen.pollinations.ai/image/'+encodeURIComponent(prompt)+'?'+new URLSearchParams({model:'flux',width:String(d.width),height:String(d.height)}).toString();
+  const response=await fetch(url,{headers:{Authorization:'Bearer '+pollinationsToken}});
+  if(!response.ok){const msg=await response.text().catch(()=> '');throw new Error('Image API returned '+response.status+(msg?': '+msg.slice(0,180):''))}
+  const blob=await response.blob();if(!blob.type.startsWith('image/'))throw new Error('The provider did not return an image.');
+  if(scenes[i].objectUrl)URL.revokeObjectURL(scenes[i].objectUrl);
+  scenes[i].objectUrl=URL.createObjectURL(blob);scenes[i].imageUrl=scenes[i].objectUrl;renderScenes();status.textContent=`Image ready for scene ${i+1}. Image previews last for this page session; export your story plan separately.`;
+ }catch(e){status.textContent='Image request failed: '+e.message+'. Reconnect if your session expired, or check your Pollinations account limits.'}
 }
 $('generateAllImages').onclick=async()=>{
  if(!scenes.length){$('imageStatus').textContent='Generate scenes from your story first.';return}
- for(let i=0;i<scenes.length;i++){
-  $('imageStatus').textContent=`Generating scene ${i+1} of ${scenes.length}…`;
-  await new Promise(resolve=>{const prompt=(scenes[i].visual||'').trim()+'; '+(scenes[i].text||'')+'; no text, no captions, cinematic film still, detailed composition, coherent lighting.';const url=makeImageUrl(prompt);const img=new Image();img.referrerPolicy='no-referrer';img.onload=()=>{scenes[i].imageUrl=url;renderScenes();resolve()};img.onerror=()=>resolve();img.src=url;});
-  if(!scenes[i].imageUrl){$('imageStatus').textContent=`Stopped at scene ${i+1}. The provider may require a key or have a quota limit. You can retry scenes individually.`;return}
- }
- $('imageStatus').textContent=`Finished: generated ${scenes.length} scene images. Save your project to keep the image URLs.`;
+ if(!pollinationsToken||Date.now()>=tokenExpiresAt){$('imageStatus').textContent='Connect Pollinations first, then retry.';return}
+ for(let i=0;i<scenes.length;i++){await generateImage(i);if(!scenes[i].imageUrl){$('imageStatus').textContent=`Stopped at scene ${i+1}. Fix the issue shown above, then retry.`;return}}
+ $('imageStatus').textContent=`Finished: generated ${scenes.length} scene images. Keep this page open to retain the image previews.`;
 };
+$('connectPollinations').onclick=connectPollinations;
+$('disconnectPollinations').onclick=disconnectPollinations;
 $('openImagePlayground').onclick=()=>window.open('https://pollinations.ai/play','_blank','noopener');
-
-function renderSaved(){let all=[];try{all=JSON.parse(localStorage.getItem('storyframe-projects')||'[]')}catch(e){};const wrap=$('saved');if(!all.length){wrap.className='empty';wrap.textContent='No saved projects yet.';return}wrap.className='';wrap.innerHTML=all.map((p,i)=>`<article class="scene"><div class="scenehead"><strong>${escapeHtml(p.title)}</strong><span>${p.scenes.length} scenes</span></div><div class="small">${escapeHtml(p.style)} · ${escapeHtml(p.ratio)} · ${escapeHtml((p.updatedAt||'').slice(0,10))}</div><div class="btnrow"><button class="btn quiet" data-load="${i}">Open project</button><button class="btn quiet" data-remove="${i}">Delete</button></div></article>`).join('');wrap.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{const p=all[+b.dataset.load];$('title').value=p.title;$('story').value=p.story;$('style').value=p.style;$('ratio').value=p.ratio;scenes=p.scenes||[];renderScenes();$('status').textContent='Project opened.';window.scrollTo({top:0,behavior:'smooth'})});wrap.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{all.splice(+b.dataset.remove,1);localStorage.setItem('storyframe-projects',JSON.stringify(all));renderSaved()})}
+function renderSaved(){let all=[];try{all=JSON.parse(localStorage.getItem('storyframe-projects')||'[]')}catch(e){}const wrap=$('saved');if(!all.length){wrap.className='empty';wrap.textContent='No saved projects yet.';return}wrap.className='';wrap.innerHTML=all.map((p,i)=>`<article class="scene"><div class="scenehead"><strong>${escapeHtml(p.title)}</strong><span>${p.scenes.length} scenes</span></div><div class="small">${escapeHtml(p.style)} · ${escapeHtml(p.ratio)} · ${escapeHtml((p.updatedAt||'').slice(0,10))}</div><div class="btnrow"><button class="btn quiet" data-load="${i}">Open project</button><button class="btn quiet" data-remove="${i}">Delete</button></div></article>`).join('');wrap.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{const p=all[+b.dataset.load];$('title').value=p.title;$('story').value=p.story;$('style').value=p.style;$('ratio').value=p.ratio;scenes=p.scenes||[];scenes.forEach(s=>{if(s.objectUrl){URL.revokeObjectURL(s.objectUrl);delete s.objectUrl;delete s.imageUrl}});renderScenes();$('status').textContent='Project opened.';window.scrollTo({top:0,behavior:'smooth'})});wrap.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{all.splice(+b.dataset.remove,1);localStorage.setItem('storyframe-projects',JSON.stringify(all));renderSaved()})}
 renderSaved();
+handleOAuthReturn();
 </script>
 </body>
 </html>
