@@ -57,7 +57,7 @@ function renderScenes(){
  const wrap=$('scenes');
  if(!scenes.length){wrap.className='empty';wrap.textContent='Your scenes will appear here. Generate scenes after adding a story.';$('sceneActions').style.display='none';return}
  wrap.className='';
- wrap.innerHTML=scenes.map((s,i)=>`<article class="scene"><div class="scenehead"><strong>Scene ${i+1}</strong><span>${s.text.length} characters</span></div>${s.imageUrl?`<img class="sceneimg" src="${escapeHtml(s.imageUrl)}" alt="Generated visual for scene ${i+1}" loading="lazy">`:''}${s.videoUrl?`<video class="sceneimg" src="${escapeHtml(s.videoUrl)}" controls playsinline preload="metadata" aria-label="Generated video for scene ${i+1}"></video>`:''}<label class="label">Scene narration / action</label><textarea data-i="${i}" data-field="text">${escapeHtml(s.text)}</textarea><label class="label">Visual direction / image prompt</label><textarea data-i="${i}" data-field="visual">${escapeHtml(s.visual)}</textarea><label class="label">Voice direction</label><input data-i="${i}" data-field="voice" value="${escapeHtml(s.voice)}"><div class="btnrow"><button class="btn" data-image="${i}">Generate this image</button><button class="btn" data-video="${i}">🎬 Generate video</button><button class="btn quiet" data-up="${i}" ${i===0?'disabled':''}>↑ Move up</button><button class="btn quiet" data-down="${i}" ${i===scenes.length-1?'disabled':''}>↓ Move down</button><button class="btn quiet" data-delete="${i}">Delete</button></div></article>`).join('');
+ wrap.innerHTML=scenes.map((s,i)=>`<article class="scene"><div class="scenehead"><strong>Scene ${i+1}</strong><span>${s.text.length} characters</span></div>${s.imageUrl?`<img class="sceneimg" src="${escapeHtml(s.imageUrl)}" alt="Generated visual for scene ${i+1}" loading="lazy">`:''}${s.videoUrl?`<video class="sceneimg" src="${escapeHtml(s.videoUrl)}" controls playsinline preload="metadata" aria-label="Generated video for scene ${i+1}"></video>`:''}<label class="label">Scene narration / action</label><textarea data-i="${i}" data-field="text">${escapeHtml(s.text)}</textarea><label class="label">Visual direction / image prompt</label><textarea data-i="${i}" data-field="visual">${escapeHtml(s.visual)}</textarea><label class="label">Voice direction</label><input data-i="${i}" data-field="voice" value="${escapeHtml(s.voice)}"><div class="btnrow"><button class="btn" data-image="${i}">Generate this image</button><button class="btn" data-video="${i}">🎬 Generate video</button><button class="btn quiet" data-up="${i}" ${i===0?'disabled':''}>↑ Move up</button><button class="btn quiet" data-down="${i}" ${i===scenes.length-1?'disabled':''}>↓ Move down</button><button class="btn quiet" data-delete="${i}">Delete</button></div><div class="status" data-video-status="${i}" aria-live="polite">${escapeHtml(s.videoStatus||'')}</div></article>`).join('');
  $('sceneActions').style.display='flex';
  wrap.querySelectorAll('[data-i]').forEach(el=>el.addEventListener('input',e=>{const i=+e.target.dataset.i;scenes[i][e.target.dataset.field]=e.target.value}));
  wrap.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>move(+b.dataset.up,-1));
@@ -110,12 +110,14 @@ async function handleOAuthReturn(){
  }catch(e){$('authStatus').textContent='Connection failed: '+e.message+'. Check the registered redirect URI and try connecting again.'}
 }
 function disconnectPollinations(){pollinationsToken=null;tokenExpiresAt=0;$('authStatus').textContent='Disconnected. Connect again before generating images or videos.'}
+function setVideoStatus(i,message){if(scenes[i])scenes[i].videoStatus=message;const local=document.querySelector(`[data-video-status="${i}"]`);if(local)local.textContent=message;$('imageStatus').textContent=message}
 async function generateVideo(i){
  if(!scenes[i])return;
- if(!pollinationsToken||Date.now()>=tokenExpiresAt){pollinationsToken=null;$('imageStatus').textContent='Connect Pollinations first, then retry this video.';return}
+ if(!pollinationsToken||Date.now()>=tokenExpiresAt){pollinationsToken=null;setVideoStatus(i,'Pollinations is not connected in this page session. Scroll to AI scene images, tap Connect Pollinations, finish authorization, then retry.');return}
+ setVideoStatus(i,`Starting video generation for scene ${i+1}…`);
  const status=$('imageStatus');
  const prompt=[scenes[i].visual||'',scenes[i].text||'',`Create a cinematic ${$('style').value} video scene. Show natural character movement, subtle facial expressions, deliberate camera motion, coherent lighting, and no on-screen text or captions.`].filter(Boolean).join(' ');
- status.textContent=`Generating video for scene ${i+1}. This can take several minutes; keep this page open.`;
+ setVideoStatus(i,`Generating video for scene ${i+1}. This can take several minutes. Keep this page open.`);
  try{
   const params=new URLSearchParams({model:'google/veo-3.1-fast',duration:'4',aspectRatio:$('ratio').value});
   const url='https://gen.pollinations.ai/video/'+encodeURIComponent(prompt)+'?'+params.toString();
@@ -125,8 +127,8 @@ async function generateVideo(i){
   if(!blob.size)throw new Error('The provider returned an empty video.');
   if(scenes[i].videoObjectUrl)URL.revokeObjectURL(scenes[i].videoObjectUrl);
   scenes[i].videoObjectUrl=URL.createObjectURL(blob);scenes[i].videoUrl=scenes[i].videoObjectUrl;
-  renderScenes();status.textContent=`Video ready for scene ${i+1}. This is prompt-to-video, so it may not exactly match the generated still image. Video previews are temporary and will not be included in saved projects or JSON exports.`;
- }catch(e){status.textContent='Video request failed: '+e.message+'. Check your Pollinations access, account limits, and try again.'}
+  renderScenes();setVideoStatus(i,`Video ready for scene ${i+1}. This is prompt-to-video, so it may not exactly match the still image. The preview is temporary and will not be included in saved projects or JSON exports.`);
+ }catch(e){setVideoStatus(i,'Video request failed: '+e.message+'. Check Pollinations access, account limits, and try again.')}
 }
 function imageDimensions(){const r=$('ratio').value;return r==='9:16'?{width:768,height:1024}:r==='16:9'?{width:1024,height:576}:{width:768,height:768}}
 async function generateImage(i){
