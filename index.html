@@ -38,7 +38,7 @@ main{max-width:860px;margin:auto;padding:20px 14px 44px}.top{display:flex;align-
 <div class="status" id="imageStatus" aria-live="polite"></div><div class="empty" style="margin-top:10px">Connect first, generate scenes, then create images. If authorization fails, check that the registered redirect URI exactly matches this site's URL.</div>
 </section>
 <section class="panel"><h3>03 · Edit your scenes</h3><div id="scenes" class="empty">Your scenes will appear here. Generate scenes after adding a story.</div><div class="btnrow" id="sceneActions" style="display:none"><button class="btn primary" id="save">Save project on this device</button><button class="btn" id="export">Export project JSON</button><button class="btn" id="script">Download scene script</button></div></section>
-<section class="panel"><h3>04 · Saved projects</h3><div id="saved" class="empty">No saved projects yet.</div><p class="hint">Projects are saved in this browser on this device. Clearing browser data may remove them, so export a backup.</p></section>
+<section class="panel"><h3>04 · Saved projects</h3><div id="saved" class="empty">No saved projects yet.</div><p class="hint">Projects are saved in this browser on this device. Video previews are temporary and are not saved in projects or JSON exports. Clearing browser data may remove saved projects, so export a backup.</p></section>
 <div class="footer">STORYFRAME AI · MVP 0.4 · OAuth image workflow</div>
 </main>
 <script>
@@ -57,13 +57,14 @@ function renderScenes(){
  const wrap=$('scenes');
  if(!scenes.length){wrap.className='empty';wrap.textContent='Your scenes will appear here. Generate scenes after adding a story.';$('sceneActions').style.display='none';return}
  wrap.className='';
- wrap.innerHTML=scenes.map((s,i)=>`<article class="scene"><div class="scenehead"><strong>Scene ${i+1}</strong><span>${s.text.length} characters</span></div>${s.imageUrl?`<img class="sceneimg" src="${escapeHtml(s.imageUrl)}" alt="Generated visual for scene ${i+1}" loading="lazy">`:''}<label class="label">Scene narration / action</label><textarea data-i="${i}" data-field="text">${escapeHtml(s.text)}</textarea><label class="label">Visual direction / image prompt</label><textarea data-i="${i}" data-field="visual">${escapeHtml(s.visual)}</textarea><label class="label">Voice direction</label><input data-i="${i}" data-field="voice" value="${escapeHtml(s.voice)}"><div class="btnrow"><button class="btn" data-image="${i}">Generate this image</button><button class="btn quiet" data-up="${i}" ${i===0?'disabled':''}>↑ Move up</button><button class="btn quiet" data-down="${i}" ${i===scenes.length-1?'disabled':''}>↓ Move down</button><button class="btn quiet" data-delete="${i}">Delete</button></div></article>`).join('');
+ wrap.innerHTML=scenes.map((s,i)=>`<article class="scene"><div class="scenehead"><strong>Scene ${i+1}</strong><span>${s.text.length} characters</span></div>${s.imageUrl?`<img class="sceneimg" src="${escapeHtml(s.imageUrl)}" alt="Generated visual for scene ${i+1}" loading="lazy">`:''}${s.videoUrl?`<video class="sceneimg" src="${escapeHtml(s.videoUrl)}" controls playsinline preload="metadata" aria-label="Generated video for scene ${i+1}"></video>`:''}<label class="label">Scene narration / action</label><textarea data-i="${i}" data-field="text">${escapeHtml(s.text)}</textarea><label class="label">Visual direction / image prompt</label><textarea data-i="${i}" data-field="visual">${escapeHtml(s.visual)}</textarea><label class="label">Voice direction</label><input data-i="${i}" data-field="voice" value="${escapeHtml(s.voice)}"><div class="btnrow"><button class="btn" data-image="${i}">Generate this image</button><button class="btn" data-video="${i}">🎬 Generate video</button><button class="btn quiet" data-up="${i}" ${i===0?'disabled':''}>↑ Move up</button><button class="btn quiet" data-down="${i}" ${i===scenes.length-1?'disabled':''}>↓ Move down</button><button class="btn quiet" data-delete="${i}">Delete</button></div></article>`).join('');
  $('sceneActions').style.display='flex';
  wrap.querySelectorAll('[data-i]').forEach(el=>el.addEventListener('input',e=>{const i=+e.target.dataset.i;scenes[i][e.target.dataset.field]=e.target.value}));
  wrap.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>move(+b.dataset.up,-1));
  wrap.querySelectorAll('[data-down]').forEach(b=>b.onclick=()=>move(+b.dataset.down,1));
  wrap.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{scenes.splice(+b.dataset.delete,1);renderScenes()});
  wrap.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>generateImage(+b.dataset.image));
+ wrap.querySelectorAll('[data-video]').forEach(b=>b.onclick=()=>generateVideo(+b.dataset.video));
 }
 function move(i,d){const j=i+d;if(j<0||j>=scenes.length)return;[scenes[i],scenes[j]]=[scenes[j],scenes[i]];renderScenes()}
 function project(){return {app:'StoryFrame AI',version:1,title:$('title').value.trim()||'Untitled story',style:$('style').value,ratio:$('ratio').value,story:$('story').value,scenes,updatedAt:new Date().toISOString()}}
@@ -108,7 +109,25 @@ async function handleOAuthReturn(){
   $('authStatus').textContent='Connected to Pollinations. You can generate images now.';
  }catch(e){$('authStatus').textContent='Connection failed: '+e.message+'. Check the registered redirect URI and try connecting again.'}
 }
-function disconnectPollinations(){pollinationsToken=null;tokenExpiresAt=0;$('authStatus').textContent='Disconnected. Connect again before generating images.'}
+function disconnectPollinations(){pollinationsToken=null;tokenExpiresAt=0;$('authStatus').textContent='Disconnected. Connect again before generating images or videos.'}
+async function generateVideo(i){
+ if(!scenes[i])return;
+ if(!pollinationsToken||Date.now()>=tokenExpiresAt){pollinationsToken=null;$('imageStatus').textContent='Connect Pollinations first, then retry this video.';return}
+ const status=$('imageStatus');
+ const prompt=[scenes[i].visual||'',scenes[i].text||'',`Create a cinematic ${$('style').value} video scene. Show natural character movement, subtle facial expressions, deliberate camera motion, coherent lighting, and no on-screen text or captions.`].filter(Boolean).join(' ');
+ status.textContent=`Generating video for scene ${i+1}. This can take several minutes; keep this page open.`;
+ try{
+  const params=new URLSearchParams({model:'google/veo-3.1-fast',duration:'4',aspectRatio:$('ratio').value});
+  const url='https://gen.pollinations.ai/video/'+encodeURIComponent(prompt)+'?'+params.toString();
+  const response=await fetch(url,{headers:{Authorization:'Bearer '+pollinationsToken}});
+  if(!response.ok){const msg=await response.text().catch(()=> '');throw new Error('Video API returned '+response.status+(msg?': '+msg.slice(0,180):''))}
+  const blob=await response.blob();
+  if(!blob.size)throw new Error('The provider returned an empty video.');
+  if(scenes[i].videoObjectUrl)URL.revokeObjectURL(scenes[i].videoObjectUrl);
+  scenes[i].videoObjectUrl=URL.createObjectURL(blob);scenes[i].videoUrl=scenes[i].videoObjectUrl;
+  renderScenes();status.textContent=`Video ready for scene ${i+1}. This is prompt-to-video, so it may not exactly match the generated still image. Video previews are temporary and will not be included in saved projects or JSON exports.`;
+ }catch(e){status.textContent='Video request failed: '+e.message+'. Check your Pollinations access, account limits, and try again.'}
+}
 function imageDimensions(){const r=$('ratio').value;return r==='9:16'?{width:768,height:1024}:r==='16:9'?{width:1024,height:576}:{width:768,height:768}}
 async function generateImage(i){
  if(!scenes[i])return;
