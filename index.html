@@ -70,7 +70,7 @@ function renderScenes(){
  wrap.querySelectorAll('[data-i]').forEach(el=>el.addEventListener('input',e=>{const i=+e.target.dataset.i;scenes[i][e.target.dataset.field]=e.target.value}));
  wrap.querySelectorAll('[data-up]').forEach(b=>b.onclick=()=>move(+b.dataset.up,-1));
  wrap.querySelectorAll('[data-down]').forEach(b=>b.onclick=()=>move(+b.dataset.down,1));
- wrap.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{scenes.splice(+b.dataset.delete,1);renderScenes()});\n wrap.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>generateImage(+b.dataset.image));
+ wrap.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{scenes.splice(+b.dataset.delete,1);renderScenes()}); wrap.querySelectorAll('[data-image]').forEach(b=>b.onclick=()=>generateImage(+b.dataset.image));
 }
 function move(i,d){const j=i+d;if(j<0||j>=scenes.length)return;[scenes[i],scenes[j]]=[scenes[j],scenes[i]];renderScenes()}
 function project(){return {app:'StoryFrame AI',version:1,title:$('title').value.trim()||'Untitled story',style:$('style').value,ratio:$('ratio').value,story:$('story').value,scenes,updatedAt:new Date().toISOString()}}
